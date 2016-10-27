@@ -1,0 +1,7 @@
+[submodule "dependencies/msgpack-c"]
+	path = dependencies/msgpack-c
+	url = https://github.com/msgpack/msgpack-c
+        branch = cpp-2.0.0
+[submodule "dependencies/tinyformat"]
+	path = dependencies/tinyformat
+	url = https://github.com/c42f/tinyformat
