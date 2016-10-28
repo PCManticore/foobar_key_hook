@@ -76,6 +76,9 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\dependencies\msgpack-c\include;</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
