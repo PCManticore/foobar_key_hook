@@ -38,4 +38,19 @@ bool Client::playback_order_set_active(PlaybackOrder value) {
   return process_request<bool>(content);
 }
 
+std::tuple<bool, size_t, size_t> Client::get_playing_item_location() {  
+  auto content = serialization::Msgpack::pack(
+    std::make_tuple("Playlist.get_playing_item_location")
+  );
+  return process_request<std::tuple<bool, size_t, size_t>>(content);
+}
 
+bool Client::queue_add_items(size_t playlist, size_t item) {
+  auto params = serialization::Msgpack::pack(
+    std::make_tuple(playlist, item)
+  );
+  auto content = serialization::Msgpack::pack(
+    std::make_tuple("Playlist.queue_add_item_playlist", params.data)
+  );
+  return process_request<bool>(content);
+}

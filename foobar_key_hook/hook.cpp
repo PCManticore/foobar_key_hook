@@ -13,12 +13,13 @@
 #define PIPE "\\\\.\\pipe\\foobar2000"
 
 enum Event {
-  BACK = 0x42,
-  PAUSE = 0x50,
-  NEXT = 0x4E,
-  RANDOM = 0x52,
-  PLAYBACK_ORDER_DEFAULT = 0x44,
-  PLAYBACK_ORDER_SHUFFLE_ALBUMS = 0x53
+  BACK = 0x42, // B
+  PAUSE = 0x50, // P
+  NEXT = 0x4E, // N
+  RANDOM = 0x52, // R
+  PLAYBACK_ORDER_DEFAULT = 0x44, // D
+  PLAYBACK_ORDER_SHUFFLE_ALBUMS = 0x53, //S
+  REPEAT = 0x41 // A
 };
 
 
@@ -76,7 +77,24 @@ public:
       {
         Event::PLAYBACK_ORDER_SHUFFLE_ALBUMS,
          wrap_callback([](Client client) { client.playback_order_set_active(PlaybackOrder::ShuffleAlbums); })
-       }
+       },
+       {
+         Event::REPEAT,
+         wrap_callback([](Client client) {
+           bool success;
+           size_t playlist;
+           size_t item;
+
+           auto result = client.get_playing_item_location();
+           std::tie(success, playlist, item) = result;
+
+           if (success) {
+             client.queue_add_items(playlist, item);
+             // Jump to the next play of the same song.
+             client.next();
+           }
+         })
+}
     };
   }
 

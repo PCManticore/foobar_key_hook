@@ -57,7 +57,7 @@ private:
     std::tuple<int, T> unpacked_result = unpack_content<T>(received);
     std::tie(status, unpacked) = unpacked_result;
     if (status != SUCCESS) {
-      auto msg = tfm::format("Operation failed with error %s", unpacked);
+      auto msg = tfm::format("Operation failed with error %s", *reinterpret_cast<std::string*>(&unpacked));
       throw RPCException(msg);
     }
     return unpacked;
@@ -72,5 +72,7 @@ public:
   virtual bool previous();
   virtual bool next();
   virtual bool playback_order_set_active(PlaybackOrder value);
+  virtual std::tuple<bool, size_t, size_t> get_playing_item_location();
+  virtual bool queue_add_items(size_t playlist, size_t item);
 
 };
